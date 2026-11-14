@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>minh27ten | Developer Portfolio</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --heading: #f0f6fc;
+      --accent: #58a6ff;
+      --tag-bg: #21262d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 { font-size: 2.5rem; color: var(--heading); margin-bottom: 0.5rem; }
+    header p { font-size: 1.2rem; color: #8b949e; }
+    .badges { margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+    .badge { background: var(--tag-bg); border: 1px solid var(--border); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+    h2 { font-size: 1.6rem; color: var(--heading); margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
+    .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .card h3 { color: var(--heading); margin-bottom: 0.5rem; font-size: 1.2rem; }
+    .card p { color: #8b949e; font-size: 0.95rem; margin-bottom: 1rem; flex-grow: 1; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #8b949e; }
+    .card-footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .card-footer a:hover { text-decoration: underline; }
+    #api-status { font-size: 0.9rem; color: #8b949e; margin-bottom: 1rem; }
+    footer { text-align: center; margin-top: 4rem; color: #8b949e; font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>minh27ten</h1>
+      <p>Developer Portfolio & GitHub API Showcase</p>
+      <div class="badges">
+        <a href="https://github.com/minh27ten" class="badge">GitHub @minh27ten</a>
+        <span class="badge">GitHub Pro</span>
+        <span class="badge">Open Source Developer</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Featured Projects</h2>
+      <div class="grid">
+        <div class="card">
+          <div>
+            <h3>CircuitLab</h3>
+            <p>100% client-side DC, AC steady-state, transient, and 3-phase power system circuit simulator powered by Modified Nodal Analysis (Web & standalone Windows .exe).</p>
+          </div>
+          <div class="card-footer">
+            <span>TypeScript · MIT</span>
+            <a href="https://github.com/minh27ten/CircuitLab" target="_blank">View Code →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div>
+            <h3>Mo_phong_mach_dien</h3>
+            <p>Phần mềm mô phỏng mạch điện DC, AC xác lập, quá độ và hệ thống điện 3 pha theo phương pháp MNA (chạy 100% trên trình duyệt & bản Windows .exe độc lập).</p>
+          </div>
+          <div class="card-footer">
+            <span>TypeScript · MIT</span>
+            <a href="https://github.com/minh27ten/Mo_phong_mach_dien" target="_blank">View Code →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div>
+            <h3>hust-control-studio</h3>
+            <p>Interactive workbench for Linear Control Theory (Mason Signal-Flow Graph reduction, pole-zero stability, state-space to TF, bilingual EN/VI, standalone Windows builds).</p>
+          </div>
+          <div class="card-footer">
+            <span>HTML / JavaScript</span>
+            <a href="https://github.com/minh27ten/hust-control-studio" target="_blank">View Code →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div>
+            <h3>gemini-quota-estimator</h3>
+            <p>Open-source tool to analyze prompts and accurately estimate Google Gemini API token usage, cost, and rate-limit consumption before sending requests.</p>
+          </div>
+          <div class="card-footer">
+            <span>Python · MIT</span>
+            <a href="https://github.com/minh27ten/gemini-quota-estimator" target="_blank">View Code →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Live Repositories (GitHub REST API)</h2>
+      <div id="api-status">Fetching live data from GitHub REST API...</div>
+      <div id="live-repos" class="grid"></div>
+    </section>
+
+    <footer>
+      <p>© 2026 minh27ten. Hosted on GitHub Pages with live GitHub REST API integration.</p>
+    </footer>
+  </div>
+
+  <script>
+    async function loadGitHubRepos() {
+      const statusEl = document.getElementById('api-status');
+      const container = document.getElementById('live-repos');
+      try {
+        const res = await fetch('https://api.github.com/users/minh27ten/repos?sort=updated&per_page=6');
+        if (!res.ok) throw new Error('GitHub API HTTP ' + res.status);
+        const repos = await res.json();
+        statusEl.textContent = 'Loaded ' + repos.length + ' repositories dynamically via GitHub REST API.';
+        container.innerHTML = repos.map(r => `
+          <div class="card">
+            <div>
+              <h3>${r.name}</h3>
+              <p>${r.description || 'No description provided.'}</p>
+            </div>
+            <div class="card-footer">
+              <span>${r.language || 'Code'} · ⭐ ${r.stargazers_count} · 🍴 ${r.forks_count}</span>
+              <a href="${r.html_url}" target="_blank">Repo →</a>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        statusEl.textContent = 'Live GitHub API fetch notice: ' + err.message;
+      }
+    }
+    loadGitHubRepos();
+  </script>
+</body>
+</html>
